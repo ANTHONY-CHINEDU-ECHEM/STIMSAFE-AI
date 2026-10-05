@@ -1,0 +1,37 @@
+# StimSafe AI configuration. Paths are relative to the repository root.
+seed: 11
+
+data:
+  n_cycles: 60000
+  raw_path: data/raw/stimulation_cycles.csv
+  oracle_path: data/raw/latent_parameters.csv     # simulator only: never read by any model
+  split: {train: 0.7, test: 0.3}
+
+# Clinical thresholds for the OHSS safety filter. Review against local guidelines before any use.
+safety:
+  amh_high_ng_ml: 3.5
+  afc_high: 20
+  young_age: 30
+  low_bmi: 20
+  max_dose_when_flagged_iu: 150
+  max_predicted_ohss_risk: 0.05
+  previous_high_response_oocytes: 18
+
+reward:
+  ohss_penalty: 2.5
+  cancellation_penalty: 0.3
+  dose_cost_per_iu: 0.0003
+
+bandit:
+  rounds: 30000
+  linucb_alpha: 0.6
+  epsilon: 0.1
+
+similar_patients:
+  index_size: 20000
+  neighbours: 300
+
+artifacts:
+  bundle: artifacts/stimsafe_bundle.joblib
+  report_dir: reports
+  figure_dir: docs/images
