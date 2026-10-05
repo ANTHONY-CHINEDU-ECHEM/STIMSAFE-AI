@@ -3,7 +3,8 @@
 **Safety constrained recommendation of ovarian stimulation protocols using contextual bandits**
 
 <p align="center">
-  <img src="docs/images/dashboard.png" alt="StimSafe AI clinician dashboard" width="920">
+  <img width="1380" height="1200" alt="dashboard" src="https://github.com/user-attachments/assets/7d07422b-1f2b-48e6-8cbe-68a69c504629" />
+
 </p>
 
 ## Project brief
@@ -46,11 +47,11 @@ On 17,988 held out cycles the logged clinician heuristic earns an expected clini
   <tr><td>Oracle (true best arm)</td><td align="center">0.637</td><td align="center">54.6%</td><td align="center">8.0%</td><td align="center">0.29%</td><td align="center">0.61%</td></tr>
 </table>
 
-<p align="center"><img src="docs/images/policy_value.png" alt="Policy value comparison" width="700"></p>
+<p align="center"><img width="1376" height="688" alt="policy_value" src="https://github.com/user-attachments/assets/fb296045-ca4b-44b8-bcba-f03457427952" /></p>
 
 Translated into a clinic treating 1,000 cycles a year, moving from the historical heuristic to StimSafe corresponds to roughly 28 fewer cases of OHSS (34 down to 6), 47 more cycles with a yield in the 8 to 18 oocyte target range and 27 fewer poor responses. The improvement does not come from prescribing less: the mean recommended dose is 208 IU against 189 IU historically. It comes from prescribing differently, with more drug for low reserve patients and a protective trigger for strong responders.
 
-<p align="center"><img src="docs/images/safety_efficacy.png" alt="Safety and efficacy by policy" width="900"></p>
+<p align="center"><img width="2160" height="640" alt="safety_efficacy" src="https://github.com/user-attachments/assets/d2518c7f-7409-41b7-97d8-4a3f80c0e335" /></p>
 
 ### Simple rules are less safe than the clinicians they are meant to standardise
 
@@ -78,7 +79,7 @@ A real clinic cannot compute the "true value" column. It has to estimate the val
   <tr><td>Oracle</td><td align="center">0.637</td><td align="center">0.491</td><td align="center">0.535</td><td align="center">0.536 (0.487 to 0.590)</td></tr>
 </table>
 
-<p align="center"><img src="docs/images/ope_accuracy.png" alt="Off policy estimates against true values" width="520"></p>
+<p align="center"><img width="992" height="736" alt="ope_accuracy" src="https://github.com/user-attachments/assets/39761dc6-f0ac-412b-ba36-0f4763ef6689" /></p>
 
 Two cautions belong beside that result. The intervals for the bandit policies are four times wider than for the classifier, because the bandit departs further from historical practice: its effective sample size is about 209 cycles out of 17,988. And all three estimators badly underestimate the oracle, whose choices depend on information the reward model does not have. Off policy evaluation is trustworthy for policies near the support of the logs and degrades as a policy becomes more ambitious. The practical consequence is a staged rollout: validate offline, deploy alongside clinicians, then widen.
 
@@ -86,17 +87,17 @@ Two cautions belong beside that result. The intervals for the bandit policies ar
 
 Monotonic constraints force predicted yield and predicted OHSS risk to rise with dose, which prevents the model from absorbing the confounded pattern in which low doses appear to produce high yields. On logged cycles the yield model has a mean absolute error of 4.5 oocytes against 6.1 for a constant prediction, its 80 percent range covers 80.1 percent of outcomes, and the OHSS model reaches a ROC AUC of 0.85. Scored against the simulator's counterfactual truth across all twelve arms, the mean error in expected yield is 2.6 oocytes.
 
-<p align="center"><img src="docs/images/dose_response.png" alt="Learned dose response curves against simulator truth" width="860"></p>
+<p align="center"><img width="2000" height="1024" alt="dose_response" src="https://github.com/user-attachments/assets/7e81c3e2-ea66-4e5d-b51f-15b93095440f" /></p>
 
 ### An online bandit halves the regret of fixed practice, and learning safely is cheap
 
 Played forward through the simulator one patient at a time from a cold start, LinUCB accumulates 46 percent less regret than the clinician heuristic over 17,988 cycles (1,813 against 3,373 utility units) and 15 percent less than epsilon greedy. Restricting LinUCB to arms that pass the safety filter raises its regret by under 5 percent. Exploration can therefore be confined to the safe set from the first patient without giving up most of the benefit.
 
-<p align="center"><img src="docs/images/online_regret.png" alt="Cumulative regret of online learners" width="560"></p>
+<p align="center"><img width="1184" height="672" alt="online_regret" src="https://github.com/user-attachments/assets/aac97044-668a-48b4-a540-a5309e5e4897" /></p>
 
 ### Where the recommendation differs from what was prescribed
 
-<p align="center"><img src="docs/images/dose_shift.png" alt="Prescribed dose against recommended dose" width="430"></p>
+<p align="center"><img width="896" height="736" alt="dose_shift" src="https://github.com/user-attachments/assets/7f72ffdb-a9dd-4dde-9758-0bf120196bd2" /></p>
 
 The policy also has a strong view on regimen: 96.7 percent of its recommendations use an antagonist protocol with a GnRH agonist trigger. That reflects the reward function, which penalises OHSS heavily and assigns no cost to the freeze all strategy that an agonist trigger usually implies. A clinic that values fresh transfer would add that cost in `configs/config.yaml` and the policy would shift. The finding is a reminder that a recommender optimises exactly what it is told to value.
 
